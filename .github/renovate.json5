@@ -1,4 +1,28 @@
 {
-	$schema: "https://docs.renovatebot.com/renovate-schema.json",
-	extends: ["github>eslint/workflows//.github/renovate/eslint-app.json5"],
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["github>eslint/workflows//.github/renovate/base.json5"],
+  rangeStrategy: "bump",
+  ignoreDeps: ["node", "npm"],
+  packageRules: [
+    {
+      description: "Update non-major dev-dependencies together.",
+      groupName: "non-major dev-dependencies",
+      groupSlug: "non-major-dev-deps",
+      matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["minor", "patch"],
+    },
+    {
+      description: "Update ESLint packages together.",
+      groupName: "eslint",
+      matchPackageNames: ["@eslint/**", "espree", "eslint-scope", "eslint-visitor-keys"],
+      minimumReleaseAge: null, // Don't wait for these packages
+      rangeStrategy: "bump",
+    },
+    {
+      description: "Update ESLint dev-dependencies together.",
+      groupName: "eslint-dev",
+      matchPackageNames: ["eslint", "eslint-config-eslint"],
+      minimumReleaseAge: null, // Don't wait for these packages
+    },
+  ],
 }
